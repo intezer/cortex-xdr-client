@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import Any, List, Optional, Union
-
-from pydantic import BaseModel
+from typing import Any
+from typing import List
+from typing import Optional
+from typing import Union
 
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
@@ -15,12 +16,14 @@ class AlertSeverity(str, Enum):
     HIGH = "high"
     UNKNOWN = "unknown"
 
+
 class QuerySortType(str, Enum):
     """
     XDR query sort type.
     """
     SEVERITY = "severity"
     CREATION_TIME = "creation_time"
+
 
 class QuerySortOrder(str, Enum):
     """
@@ -174,12 +177,11 @@ class Alert(CustomBaseModel):
     starred: Optional[bool]
     case_id: Optional[str]
     agent_ip_addresses_v6: Optional[list[str]]
-    alert_type : Optional[str]
+    alert_type: Optional[str]
     resolution_status: Optional[str]
     tags: Optional[list[str]]
     original_tags: Optional[list[str]]
     malicious_urls: Optional[list[str]]
-
 
 
 class GetAlertsResponseItem(CustomBaseModel):
@@ -349,10 +351,12 @@ class AlertV2(CustomBaseModel):
     mac_addresses: Optional[str] = None
     action_pretty: Optional[str] = None
 
+
 class GetAlertsResponseV2Item(CustomBaseModel):
     total_count: Optional[int]
     result_count: Optional[int]
     alerts: list[AlertV2]
+
 
 class GetAlertsResponseV2(CustomBaseModel):
     reply: GetAlertsResponseV2Item

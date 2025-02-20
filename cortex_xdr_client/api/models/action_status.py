@@ -1,17 +1,28 @@
-from typing import Dict, Optional, Union
-
-from pydantic import BaseModel
+import enum
+from typing import Dict
+from typing import Union
 
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
 
-class ActionStatuStr(CustomBaseModel):
-    # Since we don't know what the returned key of <agent ID>/<endpoint ID> will be.
-    __root__: Dict[Union[str, None], Union[str, None]]
+class ActionStatus(enum.StrEnum):
+    """
+    Enum for action status
+    """
+    PENDING = "PENDING"
+    IN_PROGRESS = "IN_PROGRESS"
+    CANCELLED = "CANCELLED"
+    PENDING_ABORT = "PENDING_ABORT"
+    ABORTED = "ABORTED"
+    EXPIRED = "EXPIRED"
+    COMPLETED_PARTIAL = "COMPLETED_PARTIAL"
+    COMPLETED_SUCCESSFULLY = "COMPLETED_SUCCESSFULLY"
+    FAILED = "FAILED"
+    TIMEOUT = "TIMEOUT"
 
 
 class GetActionStatusItem(CustomBaseModel):
-    data: Optional[ActionStatuStr]
+    data: Dict[Union[str, None], Union[str, None]]
 
 
 class GetActionStatus(CustomBaseModel):
