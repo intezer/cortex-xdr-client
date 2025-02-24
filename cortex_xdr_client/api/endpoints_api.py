@@ -1,17 +1,23 @@
-from typing import Dict, List, Optional, Tuple
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Tuple
 
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
-from cortex_xdr_client.api.models.endpoints import (EndpointPlatform,
-                                                    EndpointStatus,
-                                                    GetAllEndpointsResponse,
-                                                    GetEndpointResponse,
-                                                    IsolateStatus,
-                                                    ResponseActionResponse,
-                                                    ResponseStatusResponse,
-                                                    ScanStatus,
-                                                    )
-from cortex_xdr_client.api.models.filters import (new_request_data, request_filter, request_gte_lte_filter)
+from cortex_xdr_client.api.models.alerts import QuerySortOrder
+from cortex_xdr_client.api.models.endpoints import EndpointPlatform
+from cortex_xdr_client.api.models.endpoints import EndpointStatus
+from cortex_xdr_client.api.models.endpoints import GetAllEndpointsResponse
+from cortex_xdr_client.api.models.endpoints import GetEndpointResponse
+from cortex_xdr_client.api.models.endpoints import IsolateStatus
+from cortex_xdr_client.api.models.endpoints import ResponseActionResponse
+from cortex_xdr_client.api.models.endpoints import ResponseStatusResponse
+from cortex_xdr_client.api.models.endpoints import ScanStatus
+from cortex_xdr_client.api.models.endpoints import EndpointQuerySortType
+from cortex_xdr_client.api.models.filters import new_request_data
+from cortex_xdr_client.api.models.filters import request_filter
+from cortex_xdr_client.api.models.filters import request_gte_lte_filter
 
 
 class EndpointsAPI(BaseAPI):
@@ -88,6 +94,8 @@ class EndpointsAPI(BaseAPI):
                      username: List[str] = None,
                      search_from: int = None,
                      search_to: int = None,
+                     sort_type: EndpointQuerySortType = None,
+                     sort_order: QuerySortOrder = None
                      ) -> Optional[GetEndpointResponse]:
         """
         Gets a list of filtered endpoints.
@@ -109,6 +117,8 @@ class EndpointsAPI(BaseAPI):
         :param username: Username.
         :param search_from: Integer representing the starting offset within the query result set from which you want incidents returned.
         :param search_to: Integer representing the end offset within the result set after which you do not want incidents returned.
+        :param sort_type: The field to sort by the requested endpoints.
+        :param sort_order: The order of the sorting.
         :return: A GetEndpointResponse object if successful.
         """
         filters = self._get_common_endpoint_filters(endpoint_id_list=endpoint_id_list,
@@ -128,7 +138,9 @@ class EndpointsAPI(BaseAPI):
         if endpoint_status is not None:
             filters.append(request_filter("endpoint_status", "in", endpoint_status))
 
-        request_data = new_request_data(filters=filters, search_from=search_from, search_to=search_to)
+        sort = {'field': sort_type, 'keyword': sort_order} if sort_type else None
+
+        request_data = new_request_data(filters=filters, search_from=search_from, search_to=search_to, sort=sort)
 
         response = self._call(call_name="get_endpoint",
                               json_value=request_data)
@@ -270,7 +282,7 @@ class EndpointsAPI(BaseAPI):
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/response-actions/retrieve-file.html
     def retrieve_file(self,
                       endpoint_id_list: List[str] = None,
-                      files: Dict[str, dict[str, List[str]]]  = None,
+                      files: Dict[str, dict[str, List[str]]] = None,
                       incident_id: str = None,
                       ) -> Optional[ResponseActionResponse]:
         """
