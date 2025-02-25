@@ -5,6 +5,14 @@ from typing import Union
 
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
+class EndpointQuerySortType(str, Enum):
+    """
+    XDR query sort type.
+    """
+    ENDPOINT_ID = "endpoint_id"
+    FIRST_SEEN = "first_seen"
+    LAST_SEEN = "last_seen"
+    SCAN_STATUS = "scan_status"
 
 class EndpointStatus(Enum):
     """
