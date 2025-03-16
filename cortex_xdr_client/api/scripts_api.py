@@ -193,7 +193,7 @@ class ScriptsAPI(BaseAPI):
                                 endpoint_id_list: List[str],
                                 timeout: int = 600,
                                 incident_id: str = None,
-                                ) -> Optional[dict]:
+                                ) -> Optional[GetRunSnippetCodeScriptResults]:
         """
         Initiate a new endpoint script execution action using a snippet code.
 
