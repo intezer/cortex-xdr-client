@@ -14,11 +14,16 @@ class IncidentStatus(str, Enum):
     """
     NEW = "new"
     UNDER_INVESTIGATION = "under_investigation"
-    RESOLVED_THREAD_HANDLED = "resolved_threat_handled"
+    RESOLVED_THREAT_HANDLED = "resolved_threat_handled"
     RESOLVED_KNOWN_ISSUE = "resolved_known_issue"
     RESOLVED_DUPLICATE_INCIDENT = "resolved_duplicate_incident"
+    RESOLVED_DUPLICATE = "resolved_duplicate"
     RESOLVED_FALSE_POSITIVE = "resolved_false_positive"
+    RESOLVED_TRUE_POSITIVE = "resolved_true_positive"
     RESOLVED_AUTO_RESOLVE = "resolved_auto_resolve"
+    RESOLVED_AUTO = "resolved_auto"
+    RESOLVED_OTHER = "resolved_other"
+    RESOLVED_SECURITY_TESTING = "resolved_security_testing"
 
 
 class UpdateIncidentResponse(BaseModel):
