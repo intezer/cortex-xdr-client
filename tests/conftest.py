@@ -185,7 +185,14 @@ def get_alerts_response():
             "host_name":"Test",
             "source":"XDR Agent",
             "action":"BLOCKED",
-            "action_pretty":"Prevented (Blocked)"
+            "action_pretty":"Prevented (Blocked)",
+            "case_id": "123",
+            "agent_ip_addresses_v6": [],
+            "alert_type": "EXPLOIT",
+            "resolution_status": "NEW",
+            "tags": [],
+            "original_tags": [],
+            "malicious_urls": []
          },
          {
             "external_id":"<external ID>",
@@ -326,51 +333,64 @@ def get_alerts_response():
                   "data_type": null,
                   "render_type": "entity",
                   "entity_map": null,
-                  "dml_ui": false
+                  "dml_ui": false,
+                  "dml_type": null
                 },
                 {
                   "pretty_name": "action type",
                   "data_type": null,
                   "render_type": "attribute",
                   "entity_map": null,
-                  "dml_type": null
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "=",
                   "data_type": null,
                   "render_type": "operator",
-                  "entity_map": null
+                  "entity_map": null,
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "execution",
                   "data_type": null,
                   "render_type": "value",
-                  "entity_map": null
+                  "entity_map": null,
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "AND",
                   "data_type": null,
                   "render_type": "connector",
-                  "entity_map": null
+                  "entity_map": null,
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "target process cmd",
                   "data_type": "TEXT",
                   "render_type": "attribute",
                   "entity_map": "attributes",
-                  "dml_type": null
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "=",
                   "data_type": null,
                   "render_type": "operator",
-                  "entity_map": "attributes"
+                  "entity_map": "attributes",
+                  "dml_type": null,
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "*vbscript.encode*",
                   "data_type": null,
                   "render_type": "value",
-                  "entity_map": "attributes"
+                  "entity_map": "attributes",
+                  "dml_type": null,
+                  "dml_ui": false
                 }
             ],
             "host_ip":[
@@ -379,7 +399,14 @@ def get_alerts_response():
             "host_name":"Test",
             "source":"XDR Agent",
             "action":"BLOCKED",
-            "action_pretty":"Prevented (Blocked)"
+            "action_pretty":"Prevented (Blocked)",
+            "case_id": "123",
+            "agent_ip_addresses_v6": [],
+            "alert_type": "EXPLOIT",
+            "resolution_status": "NEW",
+            "tags": [],
+            "original_tags": [],
+            "malicious_urls": []
          }
       ]
    }
@@ -776,7 +803,14 @@ def get_endpoint_response():
                 ],
                 "operational_status":"PARTIALLY_PROTECTED",
                 "operational_status_description":"[{\"name\": \"generalStatus\", \"error_code\": 10004}]",
-                "scan_status":"SCAN_STATUS_NONE"
+                "scan_status":"SCAN_STATUS_NONE",
+                "last_content_update_time": 1606218769163,
+                "mac_address": ["00:00:00:00:00:00"],
+                "os_version": "10.0.19045",
+                "ipv6": ["::1"],
+                "public_ip": "127.0.0.1",
+                "operating_system": "Windows",
+                "tags": {}
              }
           ]
        }
@@ -893,12 +927,14 @@ def get_script_metadata_response():
       "script_input":[
          {
             "name":"path",
-            "type":"string"
+            "type":"string",
+            "value": ""
          },
          {
             "friendly_name":"Number of levels",
             "name":"num_levels",
-            "type":"number"
+            "type":"number",
+            "value": "0"
          }
       ],
       "script_output_type":   "dictionary",
@@ -906,17 +942,18 @@ def get_script_metadata_response():
          {
             "friendly_name":"Number Of Processes",
             "name":"output_2",
-            "type":"number"
+            "type":"number",
+            "value": "0"
          },
          {
             "friendly_name":"Name",
             "name":"output_1",
-            "type":"string"
+            "type":"string",
+            "value": ""
          }
       ]
    }
 }
-
        """
     return json.loads(response)
 
