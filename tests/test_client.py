@@ -17,7 +17,7 @@ def test_get_alerts(requests_mock, cortex_client, get_alerts_response):
     requests_mock.post(cortex_client.alerts_api._get_url("get_alerts_multi_events"),
                        json=get_alerts_response)
 
-    assert GetAlertsResponse.parse_obj(get_alerts_response) == cortex_client.alerts_api.get_alerts()
+    assert GetAlertsResponse.model_validate(get_alerts_response) == cortex_client.alerts_api.get_alerts()
 
 
 def test_get_incidents(requests_mock, cortex_client, get_incidents_response):
@@ -43,7 +43,7 @@ def test_get_all_endpoints(requests_mock, cortex_client, get_all_endpoints_respo
 def test_get_endpoint(requests_mock, cortex_client, get_endpoint_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("get_endpoint"),
                        json=get_endpoint_response)
-    assert GetEndpointResponse.parse_obj(get_endpoint_response) == cortex_client.endpoints_api.get_endpoint()
+    assert GetEndpointResponse.model_validate(get_endpoint_response) == cortex_client.endpoints_api.get_endpoint()
 
 
 def test_isolate_endpoints(requests_mock, cortex_client, get_isolate_endpoints_response):
@@ -75,7 +75,7 @@ def test_get_scripts(requests_mock, cortex_client, get_scripts_response):
 def test_get_script_metadata(requests_mock, cortex_client, get_script_metadata_response):
     requests_mock.post(cortex_client.scripts_api._get_url("get_script_metadata"),
                        json=get_script_metadata_response)
-    assert GetScriptMetadataResponse.parse_obj(
+    assert GetScriptMetadataResponse.model_validate(
         get_script_metadata_response['reply']) == cortex_client.scripts_api.get_script_metadata("")
 
 

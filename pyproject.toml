@@ -3,7 +3,7 @@ name = "cortex-xdr-client"
 packages = [
     { include = "cortex_xdr_client", from = "." },
 ]
-version = "1.9.2-dev"
+version = "1.9.6-dev"
 description = "API client for Cortex XDR Prevent"
 authors = ["ebarti"]
 license = "MIT"
@@ -14,7 +14,7 @@ repository = "https://github.com/ebarti/cortex-xdr-client"
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.26.0"
-pydantic = "^1.8.2"
+pydantic = "^2.7.4"
 
 [tool.poetry.dev-dependencies]
 requests-mock = "^1.9.3"
