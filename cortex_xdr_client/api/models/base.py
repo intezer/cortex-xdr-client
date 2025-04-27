@@ -1,9 +1,8 @@
+from pydantic import BaseModel
 
-
-from pydantic import BaseModel, Extra
 
 # Define a global base class with custom configuration
 class CustomBaseModel(BaseModel):
     class Config:
-        extra = Extra.allow
+        extra = 'allow'
         use_enum_values = True
