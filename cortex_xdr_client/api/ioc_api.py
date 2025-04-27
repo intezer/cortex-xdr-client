@@ -21,4 +21,4 @@ class IocAPI(BaseAPI):
             "validate":     validate
         }
         response = self._call(call_name="insert_jsons", json_value=request_data)
-        return IoCResponse.parse_obj(response.json())
+        return IoCResponse.model_validate(response.json())
