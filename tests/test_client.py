@@ -109,7 +109,7 @@ def test_run_script(requests_mock, cortex_client, run_script_response):
 def test_run_snippet_code_script(requests_mock, cortex_client, run_snippet_code_script_response):
     requests_mock.post(cortex_client.scripts_api._get_url("run_snippet_code_script"),
                        json=run_snippet_code_script_response)
-    assert run_snippet_code_script_response['reply'] == cortex_client.scripts_api.run_snippet_code_script("", None)
+    assert run_snippet_code_script_response['reply'] == dict(cortex_client.scripts_api.run_snippet_code_script("", None))
 
 
 def test_start_xql(requests_mock, cortex_client, start_xql_response):

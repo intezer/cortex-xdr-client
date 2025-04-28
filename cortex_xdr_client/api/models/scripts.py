@@ -82,3 +82,7 @@ class GetScriptExecutionResults(CustomBaseModel):
     scope: Optional[str]
     error_message: Optional[str]
     results: Optional[List[ScriptExecutionResult]]
+
+class GetRunSnippetCodeScriptResults(CustomBaseModel):
+    action_id: Optional[int]
+    endpoints_count: Optional[int]

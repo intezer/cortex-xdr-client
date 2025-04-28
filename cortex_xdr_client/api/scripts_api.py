@@ -4,6 +4,7 @@ from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
 from cortex_xdr_client.api.models.exceptions import InvalidResponseException
 from cortex_xdr_client.api.models.filters import (new_request_data, request_gte_lte_filter, request_in_contains_filter)
+from cortex_xdr_client.api.models.scripts import GetRunSnippetCodeScriptResults
 from cortex_xdr_client.api.models.scripts import (GetScriptExecutionResults,
                                                   GetScriptMetadataResponse,
                                                   GetScriptsExecutionStatus,
@@ -192,7 +193,7 @@ class ScriptsAPI(BaseAPI):
                                 endpoint_id_list: List[str],
                                 timeout: int = 600,
                                 incident_id: str = None,
-                                ) -> Optional[dict]:
+                                ) -> Optional[GetRunSnippetCodeScriptResults]:
         """
         Initiate a new endpoint script execution action using a snippet code.
 
@@ -209,4 +210,6 @@ class ScriptsAPI(BaseAPI):
         resp_json = response.json()
         if "reply" not in resp_json:
             raise InvalidResponseException(response, ["reply"])
-        return resp_json["reply"]
+
+        reply = resp_json["reply"]
+        return GetRunSnippetCodeScriptResults.model_validate(reply)
