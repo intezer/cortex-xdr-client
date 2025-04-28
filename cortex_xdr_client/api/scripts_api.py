@@ -212,4 +212,4 @@ class ScriptsAPI(BaseAPI):
             raise InvalidResponseException(response, ["reply"])
 
         reply = resp_json["reply"]
-        return GetRunSnippetCodeScriptResults.parse_obj(reply)
+        return GetRunSnippetCodeScriptResults.model_validate(reply)
