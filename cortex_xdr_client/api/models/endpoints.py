@@ -42,6 +42,7 @@ class IsolateStatus(Enum):
     isolated = "AGENT_ISOLATED"
     unisolated = "AGENT_UNISOLATED"
     pending_isolation = "AGENT_PENDING_ISOLATION"
+    agent_pending_isolation_cancellation = "AGENT_PENDING_ISOLATION_CANCELLATION"
 
 
 class ScanStatus(Enum):
