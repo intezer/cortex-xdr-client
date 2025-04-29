@@ -58,6 +58,7 @@ class ScanStatus(Enum):
     pending_cancellation = "SCAN_STATUS_PENDING_CANCELLATION"
     success = "SCAN_STATUS_SUCCESS"
     error = "SCAN_STATUS_ERROR"
+    timeout = "SCAN_STATUS_TIMEOUT"
 
 
 class LightEndpoint(CustomBaseModel):
