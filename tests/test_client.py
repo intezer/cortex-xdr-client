@@ -17,79 +17,79 @@ def test_get_alerts(requests_mock, cortex_client, get_alerts_response):
     requests_mock.post(cortex_client.alerts_api._get_url("get_alerts_multi_events"),
                        json=get_alerts_response)
 
-    assert GetAlertsResponse.model_validate(get_alerts_response) == cortex_client.alerts_api.get_alerts()
+    assert GetAlertsResponse.parse_obj(get_alerts_response) == cortex_client.alerts_api.get_alerts()
 
 
 def test_get_incidents(requests_mock, cortex_client, get_incidents_response):
     requests_mock.post(cortex_client.incidents_api._get_url("get_incidents"),
                        json=get_incidents_response)
-    assert GetIncidentsResponse.model_validate(get_incidents_response) == cortex_client.incidents_api.get_incidents()
+    assert GetIncidentsResponse.parse_obj(get_incidents_response) == cortex_client.incidents_api.get_incidents()
 
 
 def test_get_incident_extra_data(requests_mock, cortex_client, get_incident_extra_data_response):
     requests_mock.post(cortex_client.incidents_api._get_url("get_incident_extra_data"),
                        json=get_incident_extra_data_response)
-    assert GetExtraIncidentDataResponse.model_validate(
+    assert GetExtraIncidentDataResponse.parse_obj(
         get_incident_extra_data_response) == cortex_client.incidents_api.get_incident_extra_data("", 10)
 
 
 def test_get_all_endpoints(requests_mock, cortex_client, get_all_endpoints_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("get_endpoints"),
                        json=get_all_endpoints_response)
-    assert GetAllEndpointsResponse.model_validate(
+    assert GetAllEndpointsResponse.parse_obj(
         get_all_endpoints_response) == cortex_client.endpoints_api.get_all_endpoints()
 
 
 def test_get_endpoint(requests_mock, cortex_client, get_endpoint_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("get_endpoint"),
                        json=get_endpoint_response)
-    assert GetEndpointResponse.model_validate(get_endpoint_response) == cortex_client.endpoints_api.get_endpoint()
+    assert GetEndpointResponse.parse_obj(get_endpoint_response) == cortex_client.endpoints_api.get_endpoint()
 
 
 def test_isolate_endpoints(requests_mock, cortex_client, get_isolate_endpoints_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("isolate"),
                        json=get_isolate_endpoints_response)
-    assert ResponseActionResponse.model_validate(
+    assert ResponseActionResponse.parse_obj(
         get_isolate_endpoints_response) == cortex_client.endpoints_api.isolate_endpoints()
 
 
 def test_scan_endpoints(requests_mock, cortex_client, get_scan_endpoints_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("scan"),
                        json=get_scan_endpoints_response)
-    assert ResponseActionResponse.model_validate(get_scan_endpoints_response) == cortex_client.endpoints_api.scan_endpoints()
+    assert ResponseActionResponse.parse_obj(get_scan_endpoints_response) == cortex_client.endpoints_api.scan_endpoints()
 
 
 def test_set_endpoint_alias(requests_mock, cortex_client, get_set_endpoint_alias_response):
     requests_mock.post(cortex_client.endpoints_api._get_url("update_agent_name"),
                        json=get_set_endpoint_alias_response)
-    assert ResponseStatusResponse.model_validate(
+    assert ResponseStatusResponse.parse_obj(
         get_set_endpoint_alias_response) == cortex_client.endpoints_api.set_endpoint_alias('new_alias')
 
 
 def test_get_scripts(requests_mock, cortex_client, get_scripts_response):
     requests_mock.post(cortex_client.scripts_api._get_url("get_scripts"),
                        json=get_scripts_response)
-    assert GetScriptsResponse.model_validate(get_scripts_response['reply']) == cortex_client.scripts_api.get_scripts()
+    assert GetScriptsResponse.parse_obj(get_scripts_response['reply']) == cortex_client.scripts_api.get_scripts()
 
 
 def test_get_script_metadata(requests_mock, cortex_client, get_script_metadata_response):
     requests_mock.post(cortex_client.scripts_api._get_url("get_script_metadata"),
                        json=get_script_metadata_response)
-    assert GetScriptMetadataResponse.model_validate(
+    assert GetScriptMetadataResponse.parse_obj(
         get_script_metadata_response['reply']) == cortex_client.scripts_api.get_script_metadata("")
 
 
 def test_get_script_execution_status(requests_mock, cortex_client, get_script_execution_status_response):
     requests_mock.post(cortex_client.scripts_api._get_url("get_script_execution_status"),
                        json=get_script_execution_status_response)
-    assert GetScriptsExecutionStatus.model_validate(
+    assert GetScriptsExecutionStatus.parse_obj(
         get_script_execution_status_response['reply']) == cortex_client.scripts_api.get_script_execution_status("")
 
 
 def test_get_script_execution_results(requests_mock, cortex_client, get_script_execution_results_response):
     requests_mock.post(cortex_client.scripts_api._get_url("get_script_execution_results"),
                        json=get_script_execution_results_response)
-    assert GetScriptExecutionResults.model_validate(
+    assert GetScriptExecutionResults.parse_obj(
         get_script_execution_results_response['reply']) == cortex_client.scripts_api.get_script_execution_results("")
 
 
@@ -109,7 +109,7 @@ def test_run_script(requests_mock, cortex_client, run_script_response):
 def test_run_snippet_code_script(requests_mock, cortex_client, run_snippet_code_script_response):
     requests_mock.post(cortex_client.scripts_api._get_url("run_snippet_code_script"),
                        json=run_snippet_code_script_response)
-    assert run_snippet_code_script_response['reply'] == dict(cortex_client.scripts_api.run_snippet_code_script("", None))
+    assert run_snippet_code_script_response['reply'] == cortex_client.scripts_api.run_snippet_code_script("", None)
 
 
 def test_start_xql(requests_mock, cortex_client, start_xql_response):
@@ -121,13 +121,13 @@ def test_start_xql(requests_mock, cortex_client, start_xql_response):
 def test_get_action_status(requests_mock, cortex_client, get_action_status):
     requests_mock.post(cortex_client.actions_api._get_url("get_action_status"),
                        json=get_action_status)
-    assert GetActionStatus.model_validate(get_action_status) == cortex_client.actions_api.get_action_status(0)
+    assert GetActionStatus.parse_obj(get_action_status) == cortex_client.actions_api.get_action_status(0)
 
 
 def test_get_file_retrieval_details(requests_mock, cortex_client, get_action_status):
     requests_mock.post(cortex_client.actions_api._get_url("file_retrieval_details"),
                        json=get_action_status)
-    assert GetActionStatus.model_validate(get_action_status) == cortex_client.actions_api.get_file_retrieval_details(0)
+    assert GetActionStatus.parse_obj(get_action_status) == cortex_client.actions_api.get_file_retrieval_details(0)
 
 
 def test_get_xql_results(requests_mock, cortex_client, get_xql_results_response):
@@ -191,4 +191,4 @@ def test_post_insert_json(cortex_client, get_url, post_insert_json_response, suc
 
     assert True
     # TODO: uncomment when the API is fixed
-    # assert post_insert_json_response == cortex_client.ioc_api.insert_json([IoC.model_validate(indicator)])
+    # assert post_insert_json_response == cortex_client.ioc_api.insert_json([IoC.parse_obj(indicator)])
