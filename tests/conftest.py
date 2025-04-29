@@ -24,9 +24,9 @@ def get_url():
 def successful_response():
     mock = MagicMock()
     mock.return_value = {
-        "Prefer":       "code=200",
+        "Prefer": "code=200",
         "Content-Type": "application/json",
-        "Accept":       "application/json"
+        "Accept": "application/json"
     }
     with patch('cortex_xdr_client.api.authentication.Authentication.get_headers', mock):
         yield mock
@@ -185,14 +185,7 @@ def get_alerts_response():
             "host_name":"Test",
             "source":"XDR Agent",
             "action":"BLOCKED",
-            "action_pretty":"Prevented (Blocked)",
-            "case_id": "123",
-            "agent_ip_addresses_v6": [],
-            "alert_type": "EXPLOIT",
-            "resolution_status": "NEW",
-            "tags": [],
-            "original_tags": [],
-            "malicious_urls": []
+            "action_pretty":"Prevented (Blocked)"
          },
          {
             "external_id":"<external ID>",
@@ -333,64 +326,51 @@ def get_alerts_response():
                   "data_type": null,
                   "render_type": "entity",
                   "entity_map": null,
-                  "dml_ui": false,
-                  "dml_type": null
+                  "dml_ui": false
                 },
                 {
                   "pretty_name": "action type",
                   "data_type": null,
                   "render_type": "attribute",
                   "entity_map": null,
-                  "dml_type": null,
-                  "dml_ui": false
+                  "dml_type": null
                 },
                 {
                   "pretty_name": "=",
                   "data_type": null,
                   "render_type": "operator",
-                  "entity_map": null,
-                  "dml_type": null,
-                  "dml_ui": false
+                  "entity_map": null
                 },
                 {
                   "pretty_name": "execution",
                   "data_type": null,
                   "render_type": "value",
-                  "entity_map": null,
-                  "dml_type": null,
-                  "dml_ui": false
+                  "entity_map": null
                 },
                 {
                   "pretty_name": "AND",
                   "data_type": null,
                   "render_type": "connector",
-                  "entity_map": null,
-                  "dml_type": null,
-                  "dml_ui": false
+                  "entity_map": null
                 },
                 {
                   "pretty_name": "target process cmd",
                   "data_type": "TEXT",
                   "render_type": "attribute",
                   "entity_map": "attributes",
-                  "dml_type": null,
-                  "dml_ui": false
+                  "dml_type": null
                 },
                 {
                   "pretty_name": "=",
                   "data_type": null,
                   "render_type": "operator",
-                  "entity_map": "attributes",
-                  "dml_type": null,
-                  "dml_ui": false
+                  "entity_map": "attributes"
                 },
                 {
                   "pretty_name": "*vbscript.encode*",
                   "data_type": null,
                   "render_type": "value",
-                  "entity_map": "attributes",
-                  "dml_type": null,
-                  "dml_ui": false
+                  "entity_map": "attributes"
                 }
             ],
             "host_ip":[
@@ -399,14 +379,7 @@ def get_alerts_response():
             "host_name":"Test",
             "source":"XDR Agent",
             "action":"BLOCKED",
-            "action_pretty":"Prevented (Blocked)",
-            "case_id": "123",
-            "agent_ip_addresses_v6": [],
-            "alert_type": "EXPLOIT",
-            "resolution_status": "NEW",
-            "tags": [],
-            "original_tags": [],
-            "malicious_urls": []
+            "action_pretty":"Prevented (Blocked)"
          }
       ]
    }
@@ -514,7 +487,7 @@ def get_incident_extra_data_response():
              "starred":false,
              "hosts":null,
              "users":[
-                
+
              ],
              "incident_sources":[
                 "PAN NGFW"
@@ -799,18 +772,11 @@ def get_endpoint_response():
                 "is_isolated":"AGENT_UNISOLATED",
                 "isolated_date":null,
                 "group_name":[
-                   
+
                 ],
                 "operational_status":"PARTIALLY_PROTECTED",
                 "operational_status_description":"[{\"name\": \"generalStatus\", \"error_code\": 10004}]",
-                "scan_status":"SCAN_STATUS_NONE",
-                "last_content_update_time": 1606218769163,
-                "mac_address": ["00:00:00:00:00:00"],
-                "os_version": "10.0.19045",
-                "ipv6": ["::1"],
-                "public_ip": "127.0.0.1",
-                "operating_system": "Windows",
-                "tags": {}
+                "scan_status":"SCAN_STATUS_NONE"
              }
           ]
        }
@@ -927,14 +893,12 @@ def get_script_metadata_response():
       "script_input":[
          {
             "name":"path",
-            "type":"string",
-            "value": ""
+            "type":"string"
          },
          {
             "friendly_name":"Number of levels",
             "name":"num_levels",
-            "type":"number",
-            "value": "0"
+            "type":"number"
          }
       ],
       "script_output_type":   "dictionary",
@@ -942,18 +906,17 @@ def get_script_metadata_response():
          {
             "friendly_name":"Number Of Processes",
             "name":"output_2",
-            "type":"number",
-            "value": "0"
+            "type":"number"
          },
          {
             "friendly_name":"Name",
             "name":"output_1",
-            "type":"string",
-            "value": ""
+            "type":"string"
          }
       ]
    }
 }
+
        """
     return json.loads(response)
 

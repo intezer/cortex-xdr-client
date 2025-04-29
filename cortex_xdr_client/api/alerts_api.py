@@ -71,7 +71,7 @@ class AlertsAPI(BaseAPI):
 
         response = self._call(call_name="get_alerts_multi_events",
                               json_value=request_data)
-        return GetAlertsResponse.model_validate(response.json())
+        return GetAlertsResponse.parse_obj(response.json())
 
     def get_alerts_v2(self,
                       alert_id_list: List[int] = None,
@@ -125,7 +125,7 @@ class AlertsAPI(BaseAPI):
 
         response = self._call(call_name="get_alerts_multi_events",
                               json_value=request_data, api_version="v2")
-        return GetAlertsResponseV2.model_validate(response.json())
+        return GetAlertsResponseV2.parse_obj(response.json())
 
 
 def get_enum_values(p: List[Enum]) -> List[str]:
