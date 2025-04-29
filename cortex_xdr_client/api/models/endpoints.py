@@ -32,6 +32,7 @@ class EndpointPlatform(Enum):
     linux = "AGENT_OS_LINUX"
     windows = "AGENT_OS_WINDOWS"
     macos = "AGENT_OS_MACOS"
+    ios = "AGENT_OS_IOS"
     mac = "AGENT_OS_MAC"
 
 
