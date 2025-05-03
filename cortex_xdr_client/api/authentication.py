@@ -12,8 +12,12 @@ class AuthenticationType(Enum):
 
 
 class Authentication:
-    def __init__(self, api_key: str, api_key_id: int,
-                 auth_type: Optional[AuthenticationType] = AuthenticationType.ADVANCED):
+    def __init__(
+        self,
+        api_key: str,
+        api_key_id: int,
+        auth_type: AuthenticationType | None = AuthenticationType.ADVANCED,
+    ):
         """
         Creates an Authentication object used on authenticated calls against the backend.
         :param api_key_id: The API key ID to use.
@@ -28,16 +32,18 @@ class Authentication:
         if self._auth_type == AuthenticationType.STANDARD:
             return {
                 "x-xdr-auth-id": str(self._api_key_id),
-                'Authorization': self._api_key
+                "Authorization": self._api_key,
             }
-        nonce = "".join([secrets.choice(string.ascii_letters + string.digits) for _ in range(64)])
+        nonce = "".join(
+            [secrets.choice(string.ascii_letters + string.digits) for _ in range(64)]
+        )
         timestamp = int(datetime.now(timezone.utc).timestamp()) * 1000
         auth_key = "%s%s%s" % (self._api_key, nonce, timestamp)
         auth_key = auth_key.encode("utf-8")
         api_key_hash = hashlib.sha256(auth_key).hexdigest()
         return {
             "x-xdr-timestamp": str(timestamp),
-            "x-xdr-nonce":     nonce,
-            "x-xdr-auth-id":   str(self._api_key_id),
-            "Authorization":   api_key_hash
+            "x-xdr-nonce": nonce,
+            "x-xdr-auth-id": str(self._api_key_id),
+            "Authorization": api_key_hash,
         }

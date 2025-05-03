@@ -5,13 +5,13 @@ from cortex_xdr_client.api.base_api import BaseAPI
 
 
 class DownloadAPI(BaseAPI):
-    def __init__(self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]) -> None:
+    def __init__(
+        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+    ) -> None:
         super(DownloadAPI, self).__init__(auth, fqdn, "download", timeout)
 
     # https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR/Cortex-XDR-API-Reference/File-Retrieval-Details
-    def download_file(self,
-                          file_api_value: str
-                          ):
+    def download_file(self, file_api_value: str):
         """
         Downloads the file at the given URI, previously requested by get_file_retrieval_details function
 

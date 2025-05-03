@@ -16,23 +16,26 @@ from cortex_xdr_client.api.models.filters import request_gte_lte_filter
 
 
 class AlertsAPI(BaseAPI):
-    def __init__(self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]) -> None:
+    def __init__(
+        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+    ) -> None:
         super(AlertsAPI, self).__init__(auth, fqdn, "alerts", timeout)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/incident-management/get-alerts.html
-    def get_alerts(self,
-                   alert_id_list: List[int] = None,
-                   alert_source_list: List[str] = None,
-                   severities: List[AlertSeverity] = None,
-                   creation_time: int = None,
-                   after_creation: bool = False,
-                   server_creation_time: int = None,
-                   after_server_creation: bool = False,
-                   search_from: int = None,
-                   search_to: int = None,
-                   sort_type: QuerySortType = None,
-                   sort_order: QuerySortOrder = QuerySortOrder.ASC
-                   ) -> Optional[GetAlertsResponse]:
+    def get_alerts(
+        self,
+        alert_id_list: List[int] = None,
+        alert_source_list: List[str] = None,
+        severities: List[AlertSeverity] = None,
+        creation_time: int = None,
+        after_creation: bool = False,
+        server_creation_time: int = None,
+        after_server_creation: bool = False,
+        search_from: int = None,
+        search_to: int = None,
+        sort_type: QuerySortType = None,
+        sort_order: QuerySortOrder = QuerySortOrder.ASC,
+    ) -> GetAlertsResponse | None:
         """
         Get a list of alerts with multiple events.
 
@@ -50,7 +53,7 @@ class AlertsAPI(BaseAPI):
         :return: Returns a GetAlertsResponse object if successful.
         """
         filters = []
-        sort = {'field': sort_type, 'keyword': sort_order} if sort_type else None
+        sort = {"field": sort_type, "keyword": sort_order} if sort_type else None
 
         if alert_id_list is not None:
             filters.append(request_filter("alert_id_list", "in", alert_id_list))
@@ -59,33 +62,45 @@ class AlertsAPI(BaseAPI):
             filters.append(request_filter("alert_source", "in", alert_source_list))
 
         if severities is not None and len(severities) > 0:
-            filters.append(request_filter("severity", "in", get_enum_values(severities)))
+            filters.append(
+                request_filter("severity", "in", get_enum_values(severities))
+            )
 
         if creation_time is not None:
-            filters.append(request_gte_lte_filter("creation_time", creation_time, after_creation))
+            filters.append(
+                request_gte_lte_filter("creation_time", creation_time, after_creation)
+            )
 
         if server_creation_time is not None:
-            filters.append(request_gte_lte_filter("server_creation_time", server_creation_time, after_server_creation))
+            filters.append(
+                request_gte_lte_filter(
+                    "server_creation_time", server_creation_time, after_server_creation
+                )
+            )
 
-        request_data = new_request_data(filters=filters, search_from=search_from, search_to=search_to, sort=sort)
+        request_data = new_request_data(
+            filters=filters, search_from=search_from, search_to=search_to, sort=sort
+        )
 
-        response = self._call(call_name="get_alerts_multi_events",
-                              json_value=request_data)
-        return GetAlertsResponse.parse_obj(response.json())
+        response = self._call(
+            call_name="get_alerts_multi_events", json_value=request_data
+        )
+        return GetAlertsResponse.model_validate(response.json())
 
-    def get_alerts_v2(self,
-                      alert_id_list: List[int] = None,
-                      alert_source_list: List[str] = None,
-                      severities: List[AlertSeverity] = None,
-                      creation_time: int = None,
-                      after_creation: bool = False,
-                      server_creation_time: int = None,
-                      after_server_creation: bool = False,
-                      search_from: int = None,
-                      search_to: int = None,
-                      sort_type: QuerySortType = None,
-                      sort_order: QuerySortOrder = QuerySortOrder.ASC
-                      ) -> Optional[GetAlertsResponseV2]:
+    def get_alerts_v2(
+        self,
+        alert_id_list: List[int] = None,
+        alert_source_list: List[str] = None,
+        severities: List[AlertSeverity] = None,
+        creation_time: int = None,
+        after_creation: bool = False,
+        server_creation_time: int = None,
+        after_server_creation: bool = False,
+        search_from: int = None,
+        search_to: int = None,
+        sort_type: QuerySortType = None,
+        sort_order: QuerySortOrder = QuerySortOrder.ASC,
+    ) -> GetAlertsResponseV2 | None:
         """
         Get a list of alerts with multiple events.
 
@@ -103,7 +118,7 @@ class AlertsAPI(BaseAPI):
         :return: Returns a GetAlertsResponse object if successful.
         """
         filters = []
-        sort = {'field': sort_type, 'keyword': sort_order} if sort_type else None
+        sort = {"field": sort_type, "keyword": sort_order} if sort_type else None
 
         if alert_id_list is not None:
             filters.append(request_filter("alert_id_list", "in", alert_id_list))
@@ -112,20 +127,32 @@ class AlertsAPI(BaseAPI):
             filters.append(request_filter("alert_source", "in", alert_source_list))
 
         if severities is not None and len(severities) > 0:
-            filters.append(request_filter("severity", "in", get_enum_values(severities)))
+            filters.append(
+                request_filter("severity", "in", get_enum_values(severities))
+            )
 
         if creation_time is not None:
-            filters.append(request_gte_lte_filter("creation_time", creation_time, after_creation))
+            filters.append(
+                request_gte_lte_filter("creation_time", creation_time, after_creation)
+            )
 
         if server_creation_time is not None:
-            filters.append(request_gte_lte_filter("server_creation_time", server_creation_time, after_server_creation))
+            filters.append(
+                request_gte_lte_filter(
+                    "server_creation_time", server_creation_time, after_server_creation
+                )
+            )
 
-        request_data = new_request_data(filters=filters, search_from=search_from, search_to=search_to,
-                                        sort=sort)
+        request_data = new_request_data(
+            filters=filters, search_from=search_from, search_to=search_to, sort=sort
+        )
 
-        response = self._call(call_name="get_alerts_multi_events",
-                              json_value=request_data, api_version="v2")
-        return GetAlertsResponseV2.parse_obj(response.json())
+        response = self._call(
+            call_name="get_alerts_multi_events",
+            json_value=request_data,
+            api_version="v2",
+        )
+        return GetAlertsResponseV2.model_validate(response.json())
 
 
 def get_enum_values(p: List[Enum]) -> List[str]:

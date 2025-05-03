@@ -9,6 +9,7 @@ class ActionStatus(enum.StrEnum):
     """
     Enum for action status
     """
+
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     CANCELLED = "CANCELLED"
@@ -22,7 +23,7 @@ class ActionStatus(enum.StrEnum):
 
 
 class GetActionStatusItem(CustomBaseModel):
-    data: Dict[Union[str, None], Union[str, None]]
+    data: dict[str | None, str | None] | None = dict()
 
 
 class GetActionStatus(CustomBaseModel):
