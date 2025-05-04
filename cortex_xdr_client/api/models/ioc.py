@@ -1,6 +1,4 @@
 from enum import Enum
-from typing import List
-from typing import Optional
 
 from pydantic import Field
 
@@ -24,7 +22,7 @@ class IoCResponseItem(CustomBaseModel):
     """
 
     success: bool
-    validation_errors: List[ValidationError]
+    validation_errors: list[ValidationError]
 
 
 class IoCResponse(CustomBaseModel):
@@ -32,7 +30,7 @@ class IoCResponse(CustomBaseModel):
     IoC Response Model
     Represents the response of the IoC API.
     """
-    reply: Optional[IoCResponseItem]
+    reply: IoCResponseItem | None = None
 
 
 class Reputation(str, Enum):
@@ -111,5 +109,5 @@ class IoC(CustomBaseModel):
     reputation: Reputation
     reliability: IoCReliability
     severity: IoCSeverity
-    vendors: List[Vendor]
+    vendors: list[Vendor]
     class_: str = Field(str, alias="class")

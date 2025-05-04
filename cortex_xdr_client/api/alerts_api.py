@@ -1,7 +1,4 @@
 from enum import Enum
-from typing import List
-from typing import Optional
-from typing import Tuple
 
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
@@ -17,16 +14,16 @@ from cortex_xdr_client.api.models.filters import request_gte_lte_filter
 
 class AlertsAPI(BaseAPI):
     def __init__(
-        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+        self, auth: Authentication, fqdn: str, timeout: tuple[int, int]
     ) -> None:
         super(AlertsAPI, self).__init__(auth, fqdn, "alerts", timeout)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/incident-management/get-alerts.html
     def get_alerts(
         self,
-        alert_id_list: List[int] = None,
-        alert_source_list: List[str] = None,
-        severities: List[AlertSeverity] = None,
+        alert_id_list: list[int] | None = None,
+        alert_source_list: list[str] | None = None,
+        severities: list[AlertSeverity] | None = None,
         creation_time: int = None,
         after_creation: bool = False,
         server_creation_time: int = None,
@@ -89,9 +86,9 @@ class AlertsAPI(BaseAPI):
 
     def get_alerts_v2(
         self,
-        alert_id_list: List[int] = None,
-        alert_source_list: List[str] = None,
-        severities: List[AlertSeverity] = None,
+        alert_id_list: list[int] | None = None,
+        alert_source_list: list[str] | None = None,
+        severities: list[AlertSeverity] | None = None,
         creation_time: int = None,
         after_creation: bool = False,
         server_creation_time: int = None,
@@ -155,5 +152,5 @@ class AlertsAPI(BaseAPI):
         return GetAlertsResponseV2.model_validate(response.json())
 
 
-def get_enum_values(p: List[Enum]) -> List[str]:
+def get_enum_values(p: list[Enum]) -> list[str]:
     return [e.name for e in p]

@@ -1,5 +1,3 @@
-from typing import List, Optional, Tuple
-
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
 from cortex_xdr_client.api.models.exceptions import InvalidResponseException
@@ -18,23 +16,23 @@ from cortex_xdr_client.api.models.scripts import (GetScriptExecutionResults,
 
 class ScriptsAPI(BaseAPI):
     def __init__(
-        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+        self, auth: Authentication, fqdn: str, timeout: tuple[int, int]
     ) -> None:
         super(ScriptsAPI, self).__init__(auth, fqdn, "scripts", timeout)
 
     @staticmethod
     def _get_scripts_filters(
-        name: List[str] = None,
-        description: List[str] = None,
-        created_by: List[str] = None,
-        script_uid: List[str] = None,
+        name: list[str] = None,
+        description: list[str] = None,
+        created_by: list[str] = None,
+        script_uid: list[str] = None,
         modification_time: int = None,
         after_modification: bool = False,
         windows_supported: bool = None,
         linux_supported: bool = None,
         macos_supported: bool = None,
         is_high_risk: bool = None,
-    ) -> List[dict]:
+    ) -> list[dict]:
         filters = []
         if name:
             filters.append(request_in_contains_filter("name", name, False))
@@ -59,10 +57,10 @@ class ScriptsAPI(BaseAPI):
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-scripts.html
     def get_scripts(
         self,
-        name: List[str] = None,
-        description: List[str] = None,
-        created_by: List[str] = None,
-        script_uid: List[str] = None,
+        name: list[str] = None,
+        description: list[str] = None,
+        created_by: list[str] = None,
+        script_uid: list[str] = None,
         modification_time: int = None,
         after_modification: bool = False,
         windows_supported: bool = None,
@@ -187,7 +185,7 @@ class ScriptsAPI(BaseAPI):
         self,
         script_uid: str,
         parameters_values: dict,
-        endpoint_id_list: List[str],
+        endpoint_id_list: list[str],
         timeout: int = 600,
         incident_id: str = None,
     ) -> dict | None:
@@ -215,7 +213,7 @@ class ScriptsAPI(BaseAPI):
     def run_snippet_code_script(
         self,
         snippet_code: str,
-        endpoint_id_list: List[str],
+        endpoint_id_list: list[str],
         timeout: int = 600,
         incident_id: str = None,
     ) -> GetRunSnippetCodeScriptResults | None:

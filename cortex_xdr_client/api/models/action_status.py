@@ -1,6 +1,4 @@
 import enum
-from typing import Dict
-from typing import Union
 
 from cortex_xdr_client.api.models.base import CustomBaseModel
 

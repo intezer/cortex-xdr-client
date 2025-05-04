@@ -1,6 +1,4 @@
 from enum import Enum
-from typing import List
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -69,7 +67,7 @@ class Incident(CustomBaseModel):
 class GetIncidentsResponseItem(CustomBaseModel):
     total_count: int | None = None
     result_count: int | None = None
-    incidents: List[Incident]
+    incidents: list[Incident]
 
 
 class GetIncidentsResponse(CustomBaseModel):
@@ -219,12 +217,12 @@ class NetworkArtifactsDatum(CustomBaseModel):
 
 class AlertDatums(CustomBaseModel):
     total_count: int | None = None
-    data: List[AlertsDatum]
+    data: list[AlertsDatum]
 
 
 class NetworkArtifacts(CustomBaseModel):
     total_count: int | None = None
-    data: List[NetworkArtifactsDatum]
+    data: list[NetworkArtifactsDatum]
 
 
 class GetExtraIncidentDataResponseItem(CustomBaseModel):

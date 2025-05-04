@@ -3,7 +3,6 @@ import secrets
 import string
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Optional
 
 
 class AuthenticationType(Enum):

@@ -1,5 +1,3 @@
-from typing import Optional, Tuple
-
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
 from cortex_xdr_client.api.models.action_status import GetActionStatus
@@ -8,7 +6,7 @@ from cortex_xdr_client.api.models.filters import new_request_data
 
 class ActionsAPI(BaseAPI):
     def __init__(
-        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+        self, auth: Authentication, fqdn: str, timeout: tuple[int, int]
     ) -> None:
         super(ActionsAPI, self).__init__(auth, fqdn, "actions", timeout)
 

@@ -1,5 +1,4 @@
 import collections
-from typing import Tuple
 
 import requests
 

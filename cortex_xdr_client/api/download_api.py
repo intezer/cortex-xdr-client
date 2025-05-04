@@ -1,4 +1,3 @@
-from typing import Tuple
 
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
@@ -6,7 +5,7 @@ from cortex_xdr_client.api.base_api import BaseAPI
 
 class DownloadAPI(BaseAPI):
     def __init__(
-        self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]
+        self, auth: Authentication, fqdn: str, timeout: tuple[int, int]
     ) -> None:
         super(DownloadAPI, self).__init__(auth, fqdn, "download", timeout)
 

@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from cortex_xdr_client.api.actions_api import ActionsAPI
 from cortex_xdr_client.api.alerts_api import AlertsAPI
 from cortex_xdr_client.api.authentication import Authentication

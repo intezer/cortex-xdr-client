@@ -1,8 +1,5 @@
 from enum import Enum
 from typing import Any
-from typing import List
-from typing import Optional
-from typing import Union
 
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
@@ -190,7 +187,7 @@ class Alert(CustomBaseModel):
 class GetAlertsResponseItem(CustomBaseModel):
     total_count: int | None = None
     result_count: int | None = None
-    alerts: List[Alert]
+    alerts: list[Alert]
 
 
 class GetAlertsResponse(CustomBaseModel):
