@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Any
+from typing import Any
 
 
 def request_filter(field: str, operator: str, value: Any) -> dict:
@@ -57,7 +57,7 @@ def request_field_keyword(field: str, keyword: str) -> dict:
 
 
 def get_value_for_filter(value: Any) -> Any:
-    if isinstance(value, List):
+    if isinstance(value, list):
         return [get_value_for_filter(v) for v in value]
     elif isinstance(value, Enum):
         return value.value
@@ -65,11 +65,13 @@ def get_value_for_filter(value: Any) -> Any:
         return value
 
 
-def new_request_data(filters: List[dict] = None,
-                     sort: dict = None,
-                     search_from: int = None,
-                     search_to: int = None,
-                     other: dict = None) -> dict:
+def new_request_data(
+    filters: list[dict] = None,
+    sort: dict = None,
+    search_from: int = None,
+    search_to: int = None,
+    other: dict = None,
+) -> dict:
     """
 
     Creates a new filter request data.

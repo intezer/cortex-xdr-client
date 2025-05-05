@@ -1,9 +1,11 @@
-from typing import List, Optional, Tuple
-
 from cortex_xdr_client.api.authentication import Authentication
 from cortex_xdr_client.api.base_api import BaseAPI
 from cortex_xdr_client.api.models.exceptions import InvalidResponseException
-from cortex_xdr_client.api.models.filters import (new_request_data, request_gte_lte_filter, request_in_contains_filter)
+from cortex_xdr_client.api.models.filters import (
+    new_request_data,
+    request_gte_lte_filter,
+    request_in_contains_filter,
+)
 from cortex_xdr_client.api.models.scripts import GetRunSnippetCodeScriptResults
 from cortex_xdr_client.api.models.scripts import (GetScriptExecutionResults,
                                                   GetScriptMetadataResponse,
@@ -13,21 +15,24 @@ from cortex_xdr_client.api.models.scripts import (GetScriptExecutionResults,
 
 
 class ScriptsAPI(BaseAPI):
-    def __init__(self, auth: Authentication, fqdn: str, timeout: Tuple[int, int]) -> None:
+    def __init__(
+        self, auth: Authentication, fqdn: str, timeout: tuple[int, int]
+    ) -> None:
         super(ScriptsAPI, self).__init__(auth, fqdn, "scripts", timeout)
 
     @staticmethod
-    def _get_scripts_filters(name: List[str] = None,
-                             description: List[str] = None,
-                             created_by: List[str] = None,
-                             script_uid: List[str] = None,
-                             modification_time: int = None,
-                             after_modification: bool = False,
-                             windows_supported: bool = None,
-                             linux_supported: bool = None,
-                             macos_supported: bool = None,
-                             is_high_risk: bool = None,
-                             ) -> List[dict]:
+    def _get_scripts_filters(
+        name: list[str] = None,
+        description: list[str] = None,
+        created_by: list[str] = None,
+        script_uid: list[str] = None,
+        modification_time: int = None,
+        after_modification: bool = False,
+        windows_supported: bool = None,
+        linux_supported: bool = None,
+        macos_supported: bool = None,
+        is_high_risk: bool = None,
+    ) -> list[dict]:
         filters = []
         if name:
             filters.append(request_in_contains_filter("name", name, False))
@@ -50,18 +55,19 @@ class ScriptsAPI(BaseAPI):
         return filters
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-scripts.html
-    def get_scripts(self,
-                    name: List[str] = None,
-                    description: List[str] = None,
-                    created_by: List[str] = None,
-                    script_uid: List[str] = None,
-                    modification_time: int = None,
-                    after_modification: bool = False,
-                    windows_supported: bool = None,
-                    linux_supported: bool = None,
-                    macos_supported: bool = None,
-                    is_high_risk: bool = None,
-                    ) -> Optional[GetScriptsResponse]:
+    def get_scripts(
+        self,
+        name: list[str] = None,
+        description: list[str] = None,
+        created_by: list[str] = None,
+        script_uid: list[str] = None,
+        modification_time: int = None,
+        after_modification: bool = False,
+        windows_supported: bool = None,
+        linux_supported: bool = None,
+        macos_supported: bool = None,
+        is_high_risk: bool = None,
+    ) -> GetScriptsResponse | None:
         """
         Get a list of scripts available in the scripts library.
 
@@ -77,9 +83,18 @@ class ScriptsAPI(BaseAPI):
         :param is_high_risk: Whether the script has a high-risk outcome.
         :return: An object of type GetScriptsResponse if successful.
         """
-        filters = self._get_scripts_filters(name, description, created_by, script_uid, modification_time,
-                                            after_modification, windows_supported, linux_supported, macos_supported,
-                                            is_high_risk)
+        filters = self._get_scripts_filters(
+            name,
+            description,
+            created_by,
+            script_uid,
+            modification_time,
+            after_modification,
+            windows_supported,
+            linux_supported,
+            macos_supported,
+            is_high_risk,
+        )
         request_data = new_request_data(filters=filters)
         response = self._call("get_scripts", json_value=request_data)
         resp_json = response.json()
@@ -87,10 +102,10 @@ class ScriptsAPI(BaseAPI):
             raise InvalidResponseException(response, ["reply"])
         reply = resp_json["reply"]
 
-        return GetScriptsResponse.parse_obj(reply)
+        return GetScriptsResponse.model_validate(reply)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-script-metadata.html
-    def get_script_metadata(self, script_uid: str) -> Optional[GetScriptMetadataResponse]:
+    def get_script_metadata(self, script_uid: str) -> GetScriptMetadataResponse | None:
         """
         Get the full definitions of a specific script in the scripts library.
 
@@ -103,10 +118,12 @@ class ScriptsAPI(BaseAPI):
         if "reply" not in resp_json:
             raise InvalidResponseException(response, ["reply"])
         reply = resp_json["reply"]
-        return GetScriptMetadataResponse.parse_obj(reply)
+        return GetScriptMetadataResponse.model_validate(reply)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-script-execution-status.html
-    def get_script_execution_status(self, action_id: int) -> Optional[GetScriptsExecutionStatus]:
+    def get_script_execution_status(
+        self, action_id: int
+    ) -> GetScriptsExecutionStatus | None:
         """
         Retrieve the status of a script execution action.
 
@@ -119,10 +136,12 @@ class ScriptsAPI(BaseAPI):
         if "reply" not in resp_json:
             raise InvalidResponseException(response, ["reply"])
         reply = resp_json["reply"]
-        return GetScriptsExecutionStatus.parse_obj(reply)
+        return GetScriptsExecutionStatus.model_validate(reply)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-script-execution-results.html
-    def get_script_execution_results(self, action_id: int) -> Optional[GetScriptExecutionResults]:
+    def get_script_execution_results(
+        self, action_id: int
+    ) -> GetScriptExecutionResults | None:
         """
         Retrieve the results of a script execution action.
         :param action_id: Integer, identifier of the action
@@ -142,7 +161,9 @@ class ScriptsAPI(BaseAPI):
         return GetScriptExecutionResults.parse_obj(reply)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-script-execution-result-files.html
-    def get_script_execution_result_files(self, action_id: int, endpoint_id: int) -> Optional[str]:
+    def get_script_execution_result_files(
+        self, action_id: int, endpoint_id: int
+    ) -> str | None:
         """
         Get the files retrieved from a specific endpoint during a script execution.
 
@@ -160,13 +181,14 @@ class ScriptsAPI(BaseAPI):
         return resp_json["reply"]["DATA"]
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/run-script.html
-    def run_script(self,
-                   script_uid: str,
-                   parameters_values: dict,
-                   endpoint_id_list: List[str],
-                   timeout: int = 600,
-                   incident_id: str = None,
-                   ) -> Optional[dict]:
+    def run_script(
+        self,
+        script_uid: str,
+        parameters_values: dict,
+        endpoint_id_list: list[str],
+        timeout: int = 600,
+        incident_id: str = None,
+    ) -> dict | None:
         """
         Initiate a new endpoint script execution action using a script from the script library.
 
@@ -188,12 +210,13 @@ class ScriptsAPI(BaseAPI):
         return resp_json["reply"]
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/run-snippet-code-script.html
-    def run_snippet_code_script(self,
-                                snippet_code: str,
-                                endpoint_id_list: List[str],
-                                timeout: int = 600,
-                                incident_id: str = None,
-                                ) -> Optional[GetRunSnippetCodeScriptResults]:
+    def run_snippet_code_script(
+        self,
+        snippet_code: str,
+        endpoint_id_list: list[str],
+        timeout: int = 600,
+        incident_id: str = None,
+    ) -> GetRunSnippetCodeScriptResults | None:
         """
         Initiate a new endpoint script execution action using a snippet code.
 
@@ -212,4 +235,4 @@ class ScriptsAPI(BaseAPI):
             raise InvalidResponseException(response, ["reply"])
 
         reply = resp_json["reply"]
-        return GetRunSnippetCodeScriptResults.parse_obj(reply)
+        return GetRunSnippetCodeScriptResults.model_validate(reply)
