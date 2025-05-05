@@ -158,7 +158,7 @@ class ScriptsAPI(BaseAPI):
             if '_return_value' in reply['results'][0]:
                 if len(reply['results'][0]['_return_value']) > 0:
                     reply['results'][0]['standard_output'] = reply['results'][0]['_return_value']
-        return GetScriptExecutionResults.parse_obj(reply)
+        return GetScriptExecutionResults.model_validate(reply)
 
     # https://docs.paloaltonetworks.com/cortex/cortex-xdr/cortex-xdr-api/cortex-xdr-apis/script-execution/get-script-execution-result-files.html
     def get_script_execution_result_files(
