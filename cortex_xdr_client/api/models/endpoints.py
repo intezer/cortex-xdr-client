@@ -23,6 +23,7 @@ class EndpointStatus(Enum):
     disconnected = "DISCONNECTED"
     lost = "LOST"
     uninstalled = "UNINSTALLED"
+    vdi_pending_log_on = "VDI_PENDING_LOG_ON"
 
 
 class EndpointPlatform(Enum):
