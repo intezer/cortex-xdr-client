@@ -90,6 +90,7 @@ class AlertsAPI(BaseAPI):
         alert_source_list: list[str] | None = None,
         severities: list[AlertSeverity] | None = None,
         creation_time: int = None,
+        last_modified_time: int = None,
         after_creation: bool = False,
         server_creation_time: int = None,
         after_server_creation: bool = False,
@@ -105,6 +106,7 @@ class AlertsAPI(BaseAPI):
         :param alert_source_list: List of strings of the Alert source
         :param severities: List of strings of the Alert severity
         :param creation_time: Timestamp of the Creation time. Also known as detection_timestamp.
+        :param last_modified_time: Timestamp of the Last modified time. Also known as last_modified_ts.
         :param after_creation: If the creation date will be the upper or lower bound limit.
         :param server_creation_time: Timestamp of the Server creation time. Also known as local_insert_ts.
         :param after_server_creation: If the server creation date will be the upper or lower bound limit.
@@ -131,6 +133,13 @@ class AlertsAPI(BaseAPI):
         if creation_time is not None:
             filters.append(
                 request_gte_lte_filter("creation_time", creation_time, after_creation)
+            )
+
+        if last_modified_time is not None:
+            filters.append(
+                request_gte_lte_filter(
+                    "last_modified_ts", last_modified_time, after_creation
+                )
             )
 
         if server_creation_time is not None:
