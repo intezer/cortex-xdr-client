@@ -154,7 +154,7 @@ class AlertsDatum(CustomBaseModel):
     event_id: str | None = None
     event_sub_type: str | None = None
     event_timestamp: str | None = None
-    event_type: str | None = None
+    event_type: str | int | None = None
     external_id: str | None = None
     filter_rule_id: str | None = None
     fw_app_category: str | None = None

@@ -90,7 +90,7 @@ class Event(CustomBaseModel):
     event_id: str | None = None
     event_sub_type: str | None = None
     event_timestamp: int | None = None
-    event_type: str | None = None
+    event_type: str | int | None = None
     fw_app_category: str | None = None
     fw_app_id: str | None = None
     fw_app_subcategory: str | None = None
@@ -228,7 +228,7 @@ class AlertV2(CustomBaseModel):
     dst_association_strength: list[int] | None = None
     story_id: list[str] | None = None
     event_id: list[str] | None = None
-    event_type: list[str] | None = None
+    event_type: list[str | int] | None = None
     event_timestamp: list[int] | None = None
     actor_process_instance_id: list[str] | None = None
     actor_process_image_path: list[str] | None = None
