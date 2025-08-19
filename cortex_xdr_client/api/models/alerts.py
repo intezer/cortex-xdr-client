@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Any
 
+from pydantic import field_validator
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
 
@@ -124,6 +125,17 @@ class Event(CustomBaseModel):
     os_actor_thread_thread_id: str | None = None
     story_id: str | None = None
     user_name: str | None = None
+
+    # Field validators
+    @field_validator('event_type', mode='before')
+    @classmethod
+    def normalize_event_type(cls, value: str | int | None) -> str | None:
+        """Normalize event_type during validation to ensure consistent types."""
+        if value is None:
+            return None
+        if isinstance(value, int):
+            return str(value)
+        return value
 
 
 class AlertDescriptionItem(CustomBaseModel):
@@ -350,6 +362,17 @@ class AlertV2(CustomBaseModel):
     user_name: list[str] | None = None
     mac_addresses: str | None = None
     action_pretty: str | None = None
+
+    # Field validators
+    @field_validator('event_type', mode='before')
+    @classmethod
+    def normalize_event_type(cls, value: list[str | int] | None) -> list[str] | None:
+        """Normalize event_type during validation to ensure consistent types."""
+        if value is None:
+            return None
+        if isinstance(value, list):
+            return [str(item) if isinstance(item, int) else item for item in value]
+        return value
 
 
 class GetAlertsResponseV2Item(CustomBaseModel):
