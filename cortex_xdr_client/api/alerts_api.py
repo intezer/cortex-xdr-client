@@ -94,6 +94,7 @@ class AlertsAPI(BaseAPI):
         after_creation: bool = False,
         server_creation_time: int = None,
         after_server_creation: bool = False,
+        exclude_alert_source_list: list[str] | None = None,
         search_from: int = None,
         search_to: int = None,
         sort_type: QuerySortType = None,
@@ -110,6 +111,7 @@ class AlertsAPI(BaseAPI):
         :param after_creation: If the creation date will be the upper or lower bound limit.
         :param server_creation_time: Timestamp of the Server creation time. Also known as local_insert_ts.
         :param after_server_creation: If the server creation date will be the upper or lower bound limit.
+        :param exclude_alert_source_list: List of strings of the Alert source to exclude.
         :param search_to: Integer representing the end offset within the result set after which you do not want incidents returned.
         :param search_from: Integer representing the starting offset within the query result set from which you want incidents returned.
         :param sort_type: The field to sort by the requested alerts.
@@ -124,6 +126,11 @@ class AlertsAPI(BaseAPI):
 
         if alert_source_list is not None:
             filters.append(request_filter("alert_source", "in", alert_source_list))
+
+        if exclude_alert_source_list is not None:
+            filters.append(
+                request_filter("alert_source", "nin", exclude_alert_source_list)
+            )
 
         if severities is not None and len(severities) > 0:
             filters.append(
