@@ -166,14 +166,14 @@ class Alert(CustomBaseModel):
     contains_featured_ip: bool | None = None
     contains_featured_user: bool | None = None
     deduplicate_tokens: str | None = None
-    description: str | list[AlertDescriptionItem]
+    description: str | list[AlertDescriptionItem] | None = None
     detection_timestamp: int | None = None
     end_match_attempt_ts: int | None = None
     endpoint_id: str | None = None
-    events: list[Event]
+    events: list[Event] | None = None
     external_id: str | None = None
     filter_rule_id: str | None = None
-    host_ip: list[str] | None
+    host_ip: list[str] | None = None
     host_name: str | None = None
     is_whitelisted: bool | None = None
     local_insert_ts: int | None = None
