@@ -167,6 +167,111 @@ class AlertsAPI(BaseAPI):
         )
         return GetAlertsResponseV2.model_validate(response.json())
 
+    def get_xsiam_alerts(
+        self,
+        alert_ids: list[str] | None = None,
+        creation_time: int | None = None,
+        limit: int = 50,
+        page: int = 0,
+        sort_type: QuerySortType = QuerySortType.CREATION_TIME,
+        sort_order: QuerySortOrder = QuerySortOrder.ASC,
+    ) -> GetAlertsResponse | None:
+        """
+        Get a list of SIEM alerts using page-based pagination.
+        This method uses the /alerts/get_alerts endpoint for Cortex XSIAM.
+
+        :param alert_ids: List of alert IDs (as strings)
+        :param creation_time: Timestamp of the Creation time in milliseconds
+        :param limit: Number of alerts per page (max 100)
+        :param page: Page number (0-indexed)
+        :param sort_type: The field to sort by the requested alerts (default: CREATION_TIME)
+        :param sort_order: The order of the sorting (default: ASC for oldest first)
+        :return: Returns a GetAlertsResponse object if successful.
+        """
+        filters = []
+
+        if alert_ids is not None:
+            filters.append(request_filter("alert_id_list", "in", alert_ids))
+
+        if creation_time is not None:
+            filters.append(
+                request_gte_lte_filter("creation_time", creation_time, True)
+            )
+
+        limit = min(limit, 100)
+        sort = {"field": sort_type, "keyword": sort_order} if sort_type else None
+
+        request_data = {
+            'request_data': {
+                'filters': filters,
+                'limit': limit,
+                'page': page,
+            }
+        }
+
+        if sort:
+            request_data['request_data']['sort'] = sort
+
+        response = self._call(
+            call_name="get_alerts",
+            json_value=request_data,
+        )
+        return GetAlertsResponse.model_validate(response.json())
+
+    def get_all_xsiam_alerts(
+        self,
+        alert_ids: list[str] | None = None,
+        creation_time: int | None = None,
+        page_size: int = 50,
+        max_alerts: int | None = None,
+    ) -> list:
+        """
+        Get all SIEM alerts across all pages using automatic pagination.
+        This method automatically handles pagination and returns all alerts.
+
+        :param alert_ids: List of alert IDs (as strings)
+        :param creation_time: Timestamp of the Creation time in milliseconds
+        :param page_size: Number of alerts per page (max 100)
+        :param max_alerts: Maximum number of alerts to return (None for all)
+        :return: Returns a list of Alert objects.
+        """
+        page_size = min(page_size, 100)
+        page = 0
+        all_alerts = []
+        total_fetched = 0
+
+        while True:
+            result = self.get_xsiam_alerts(
+                alert_ids=alert_ids,
+                creation_time=creation_time,
+                limit=page_size,
+                page=page,
+                sort_type=QuerySortType.CREATION_TIME,
+                sort_order=QuerySortOrder.ASC,
+            )
+
+            if not result or not result.reply or not result.reply.alerts:
+                break
+
+            alerts = result.reply.alerts
+            total_count = result.reply.total_count
+
+            for alert in alerts:
+                if max_alerts is not None and total_fetched >= max_alerts:
+                    return all_alerts
+                all_alerts.append(alert)
+                total_fetched += 1
+
+            if len(alerts) < page_size:
+                break
+
+            if total_count is not None and total_fetched >= total_count:
+                break
+
+            page += 1
+
+        return all_alerts
+
 
 def get_enum_values(p: list[Enum]) -> list[str]:
     return [e.name for e in p]
