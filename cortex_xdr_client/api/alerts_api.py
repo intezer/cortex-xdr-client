@@ -254,7 +254,7 @@ class AlertsAPI(BaseAPI):
                 break
 
             alerts = result.reply.alerts
-            total_count = result.reply.total_count or 0
+            total_count = result.reply.total_count
 
             for alert in alerts:
                 if max_alerts is not None and total_fetched >= max_alerts:
@@ -262,7 +262,10 @@ class AlertsAPI(BaseAPI):
                 all_alerts.append(alert)
                 total_fetched += 1
 
-            if total_fetched >= total_count or len(alerts) < page_size:
+            if len(alerts) < page_size:
+                break
+
+            if total_count is not None and total_fetched >= total_count:
                 break
 
             page += 1
