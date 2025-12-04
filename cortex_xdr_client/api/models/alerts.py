@@ -1,6 +1,8 @@
+import datetime
 from enum import Enum
 from typing import Any
 
+from pydantic import computed_field
 from pydantic import field_validator
 from cortex_xdr_client.api.models.base import CustomBaseModel
 
@@ -194,6 +196,12 @@ class Alert(CustomBaseModel):
     tags: list[str] | None = None
     original_tags: list[str] | None = None
     malicious_urls: list[str] | None = None
+
+    @computed_field
+    def detection_datetime(self) -> datetime.datetime | None:
+        if self.detection_timestamp is None:
+            return None
+        return datetime.datetime.utcfromtimestamp(self.detection_timestamp / 1000)
 
 
 class GetAlertsResponseItem(CustomBaseModel):
