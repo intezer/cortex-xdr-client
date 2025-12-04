@@ -167,7 +167,7 @@ class AlertsAPI(BaseAPI):
         )
         return GetAlertsResponseV2.model_validate(response.json())
 
-    def get_siem_alerts(
+    def get_xsiam_alerts(
         self,
         alert_ids: list[str] | None = None,
         creation_time: int | None = None,
@@ -218,7 +218,7 @@ class AlertsAPI(BaseAPI):
         )
         return GetAlertsResponse.model_validate(response.json())
 
-    def get_all_siem_alerts(
+    def get_all_xsiam_alerts(
         self,
         alert_ids: list[str] | None = None,
         creation_time: int | None = None,
@@ -241,7 +241,7 @@ class AlertsAPI(BaseAPI):
         total_fetched = 0
 
         while True:
-            result = self.get_siem_alerts(
+            result = self.get_xsiam_alerts(
                 alert_ids=alert_ids,
                 creation_time=creation_time,
                 limit=page_size,
