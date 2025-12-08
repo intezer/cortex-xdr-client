@@ -197,7 +197,14 @@ class Alert(CustomBaseModel):
     original_tags: list[str] | None = None
     malicious_urls: list[str] | None = None
 
-    @field_validator('host_ip', 'tags', 'original_tags', 'mitre_tactic_id_and_name', 'mitre_technique_id_and_name', 'agent_ip_addresses_v6', mode='before')
+    @field_validator('host_ip',
+                     'tags',
+                     'original_tags',
+                     'mitre_tactic_id_and_name',
+                     'mitre_technique_id_and_name',
+                     'agent_ip_addresses_v6',
+                     'mac_address',
+                     mode='before')
     @classmethod
     def _split_comma_separated_string_to_list(cls, value: str | list[str] | None) -> list[str] | None:
         if value is None:
