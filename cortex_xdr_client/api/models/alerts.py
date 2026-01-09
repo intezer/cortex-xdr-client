@@ -264,7 +264,7 @@ class AlertV2(CustomBaseModel):
     dst_association_strength: list[int] | None = None
     story_id: list[str] | None = None
     event_id: list[str] | None = None
-    event_type: list[str | int] | None = None
+    event_type: list[str | int | None] | None = None
     event_timestamp: list[int] | None = None
     actor_process_instance_id: list[str] | None = None
     actor_process_image_path: list[str] | None = None
