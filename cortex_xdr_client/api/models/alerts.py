@@ -16,6 +16,7 @@ class AlertSeverity(str, Enum):
     MEDIUM = "medium"
     HIGH = "high"
     UNKNOWN = "unknown"
+    CRITICAL = "critical"
 
 
 class QuerySortType(str, Enum):
