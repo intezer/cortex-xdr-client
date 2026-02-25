@@ -171,6 +171,7 @@ class AlertsAPI(BaseAPI):
         self,
         alert_ids: list[str] | None = None,
         creation_time: int | None = None,
+        additional_filters: list[dict] | None = None,
         limit: int = 50,
         page: int = 0,
         sort_type: QuerySortType = QuerySortType.CREATION_TIME,
@@ -182,6 +183,7 @@ class AlertsAPI(BaseAPI):
 
         :param alert_ids: List of alert IDs (as strings)
         :param creation_time: Timestamp of the Creation time in milliseconds
+        :param additional_filters: List of additional API-compatible filter dicts to include in the request
         :param limit: Number of alerts per page (max 100)
         :param page: Page number (0-indexed)
         :param sort_type: The field to sort by the requested alerts (default: CREATION_TIME)
@@ -197,6 +199,9 @@ class AlertsAPI(BaseAPI):
             filters.append(
                 request_gte_lte_filter("creation_time", creation_time, True)
             )
+
+        if additional_filters:
+            filters.extend(additional_filters)
 
         limit = min(limit, 100)
         sort = {"field": sort_type, "keyword": sort_order} if sort_type else None
@@ -222,6 +227,7 @@ class AlertsAPI(BaseAPI):
         self,
         alert_ids: list[str] | None = None,
         creation_time: int | None = None,
+        additional_filters: list[dict] | None = None,
         page_size: int = 50,
         max_alerts: int | None = None,
     ) -> list:
@@ -231,6 +237,7 @@ class AlertsAPI(BaseAPI):
 
         :param alert_ids: List of alert IDs (as strings)
         :param creation_time: Timestamp of the Creation time in milliseconds
+        :param additional_filters: List of additional API-compatible filter dicts to include in the request
         :param page_size: Number of alerts per page (max 100)
         :param max_alerts: Maximum number of alerts to return (None for all)
         :return: Returns a list of Alert objects.
@@ -244,6 +251,7 @@ class AlertsAPI(BaseAPI):
             result = self.get_xsiam_alerts(
                 alert_ids=alert_ids,
                 creation_time=creation_time,
+                additional_filters=additional_filters,
                 limit=page_size,
                 page=page,
                 sort_type=QuerySortType.CREATION_TIME,
