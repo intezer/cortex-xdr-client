@@ -205,6 +205,7 @@ class Alert(CustomBaseModel):
                      'mitre_technique_id_and_name',
                      'agent_ip_addresses_v6',
                      'mac_address',
+                     'malicious_urls',
                      mode='before')
     @classmethod
     def _split_comma_separated_string_to_list(cls, value: str | list[str] | None) -> list[str] | None:
@@ -397,6 +398,22 @@ class AlertV2(CustomBaseModel):
             return None
         if isinstance(value, list):
             return [str(item) if isinstance(item, int) else item for item in value]
+        return value
+
+    @field_validator('host_ip',
+                     'tags',
+                     'original_tags',
+                     'mitre_tactic_id_and_name',
+                     'mitre_technique_id_and_name',
+                     'agent_ip_addresses_v6',
+                     'malicious_urls',
+                     mode='before')
+    @classmethod
+    def _split_comma_separated_string_to_list(cls, value: str | list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        if isinstance(value, str):
+            return [item.strip() for item in value.split(',') if item.strip()]
         return value
 
 
