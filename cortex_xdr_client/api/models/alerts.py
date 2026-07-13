@@ -299,10 +299,10 @@ class AlertV2(CustomBaseModel):
     action_registry_full_key: list[str] | None = None
     action_local_ip: list[str] | None = None
     action_local_ip_v6: list[str] | None = None
-    action_local_port: list[int] | None = None
+    action_local_port: list[int | None] | None = None
     action_remote_ip: list[str] | None = None
     action_remote_ip_v6: list[str] | None = None
-    action_remote_port: list[int] | None = None
+    action_remote_port: list[int | None] | None = None
     action_external_hostname: list[str] | None = None
     action_country: list[str] | None = None
     action_process_instance_id: list[str] | None = None
