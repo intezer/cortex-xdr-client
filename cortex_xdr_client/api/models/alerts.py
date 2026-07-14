@@ -2,9 +2,14 @@ import datetime
 from enum import Enum
 from typing import Any
 
+from pydantic import BaseModel
 from pydantic import computed_field
 from pydantic import field_validator
 from cortex_xdr_client.api.models.base import CustomBaseModel
+
+
+class UpdateAlertsResponse(BaseModel):
+    reply: int
 
 
 class AlertSeverity(str, Enum):
