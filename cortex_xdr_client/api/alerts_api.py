@@ -7,6 +7,7 @@ from cortex_xdr_client.api.models.alerts import GetAlertsResponse
 from cortex_xdr_client.api.models.alerts import GetAlertsResponseV2
 from cortex_xdr_client.api.models.alerts import QuerySortOrder
 from cortex_xdr_client.api.models.alerts import QuerySortType
+from cortex_xdr_client.api.models.alerts import UpdateAlertsResponse
 from cortex_xdr_client.api.models.filters import new_request_data
 from cortex_xdr_client.api.models.filters import request_filter
 from cortex_xdr_client.api.models.filters import request_gte_lte_filter
@@ -279,6 +280,35 @@ class AlertsAPI(BaseAPI):
             page += 1
 
         return all_alerts
+
+    # https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-REST-API/Update-Alerts
+    def update_alerts(
+        self,
+        alert_id_list: list[str],
+        status: str | None = None,
+        comment: str | None = None,
+    ) -> UpdateAlertsResponse:
+        """
+        Update the status and/or comment of up to 100 alerts.
+
+        :param alert_id_list: List of alert IDs to update (max 100 per request).
+        :param status: New status for the alerts (e.g. resolved_false_positive).
+        :param comment: Comment to add to the alerts.
+        :return: Returns an UpdateAlertsResponse object if successful.
+        """
+        update_data = {}
+        if status is not None:
+            update_data['status'] = status
+
+        if comment is not None:
+            update_data['comment'] = comment
+
+        request_data = new_request_data(
+            other=dict(alert_id_list=alert_id_list, update_data=update_data)
+        )
+        response = self._call(call_name="update_alerts", json_value=request_data)
+
+        return UpdateAlertsResponse.model_validate(response.json())
 
 
 def get_enum_values(p: list[Enum]) -> list[str]:

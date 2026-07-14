@@ -1,5 +1,6 @@
 from cortex_xdr_client.api.models.action_status import GetActionStatus
 from cortex_xdr_client.api.models.alerts import GetAlertsResponse
+from cortex_xdr_client.api.models.alerts import UpdateAlertsResponse
 from cortex_xdr_client.api.models.endpoints import (
     GetAllEndpointsResponse,
     GetEndpointResponse,
@@ -40,6 +41,54 @@ def test_get_incidents(requests_mock, cortex_client, get_incidents_response):
         GetIncidentsResponse.model_validate(get_incidents_response)
         == cortex_client.incidents_api.get_incidents()
     )
+
+
+def test_update_alerts_resolved_false_positive(requests_mock, cortex_client):
+    update_alerts_response = {"reply": 2}
+    requests_mock.post(
+        cortex_client.alerts_api._get_url("update_alerts"),
+        json=update_alerts_response,
+    )
+
+    result = cortex_client.alerts_api.update_alerts(
+        ["1", "2"], status="resolved_false_positive", comment="closing"
+    )
+
+    assert UpdateAlertsResponse.model_validate(update_alerts_response) == result
+    assert requests_mock.last_request.url.endswith(
+        "/public_api/v1/alerts/update_alerts"
+    )
+    assert requests_mock.last_request.json() == {
+        "request_data": {
+            "alert_id_list": ["1", "2"],
+            "update_data": {
+                "status": "resolved_false_positive",
+                "comment": "closing",
+            },
+        }
+    }
+
+
+def test_update_alerts_resolved_true_positive_without_comment(
+    requests_mock, cortex_client
+):
+    update_alerts_response = {"reply": 1}
+    requests_mock.post(
+        cortex_client.alerts_api._get_url("update_alerts"),
+        json=update_alerts_response,
+    )
+
+    result = cortex_client.alerts_api.update_alerts(
+        ["5"], status="resolved_true_positive"
+    )
+
+    assert UpdateAlertsResponse.model_validate(update_alerts_response) == result
+    assert requests_mock.last_request.json() == {
+        "request_data": {
+            "alert_id_list": ["5"],
+            "update_data": {"status": "resolved_true_positive"},
+        }
+    }
 
 
 def test_get_incident_extra_data(
