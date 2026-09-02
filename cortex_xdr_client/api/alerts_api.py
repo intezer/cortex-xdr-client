@@ -182,6 +182,10 @@ class AlertsAPI(BaseAPI):
         Get a list of SIEM alerts using page-based pagination.
         This method uses the /alerts/get_alerts endpoint for Cortex XSIAM.
 
+        The endpoint has no limit or page parameter - it paginates on search_from/search_to - so the
+        page argument is discarded server-side and every call returns the same first rows. Use
+        get_xsiam_alerts_by_offset for anything that needs to walk past the first page.
+
         :param alert_ids: List of alert IDs (as strings)
         :param creation_time: Timestamp of the Creation time in milliseconds
         :param additional_filters: List of additional API-compatible filter dicts to include in the request
@@ -224,6 +228,84 @@ class AlertsAPI(BaseAPI):
         )
         return GetAlertsResponse.model_validate(response.json())
 
+    def get_xsiam_alerts_by_offset(
+        self,
+        alert_ids: list[str] | None = None,
+        creation_time: int | None = None,
+        after_creation: bool = True,
+        server_creation_time: int | None = None,
+        after_server_creation: bool = True,
+        last_modified_time: int | None = None,
+        additional_filters: list[dict] | None = None,
+        search_from: int | None = None,
+        search_to: int | None = None,
+        sort_type: QuerySortType | None = QuerySortType.CREATION_TIME,
+        sort_order: QuerySortOrder = QuerySortOrder.ASC,
+    ) -> GetAlertsResponse | None:
+        """
+        Get a page of SIEM alerts from the /alerts/get_alerts endpoint, using offset-based pagination.
+
+        Offsets are only stable while the sort field is stable. Sorting ascending on a time field means
+        newly created alerts land at the end of the result set, so offsets already walked keep pointing
+        at the same alerts for the length of a walk.
+
+        :param alert_ids: List of alert IDs (as strings)
+        :param creation_time: Timestamp of the Creation time in milliseconds. Also known as
+                              detection_timestamp.
+        :param after_creation: If the creation time is the lower (True) or upper (False) bound.
+        :param server_creation_time: Timestamp of the Server creation time in milliseconds. Also known
+                                     as local_insert_ts, which the alert response carries - unlike
+                                     creation_time, which is filter-only.
+        :param after_server_creation: If the server creation time is the lower (True) or upper (False)
+                                      bound.
+        :param last_modified_time: Timestamp of the Last modified time in milliseconds. Also known as
+                                   last_modified_ts.
+        :param additional_filters: List of additional API-compatible filter dicts to include
+        :param search_from: Starting offset within the result set, zero-based. Defaults to 0.
+        :param search_to: End offset within the result set. Defaults to 100.
+        :param sort_type: The field to sort the requested alerts by.
+        :param sort_order: The order of the sorting.
+        :return: Returns a GetAlertsResponse object if successful.
+        """
+        filters = []
+
+        if alert_ids is not None:
+            filters.append(request_filter("alert_id_list", "in", alert_ids))
+
+        if creation_time is not None:
+            filters.append(
+                request_gte_lte_filter("creation_time", creation_time, after_creation)
+            )
+
+        if server_creation_time is not None:
+            filters.append(
+                request_gte_lte_filter(
+                    "server_creation_time", server_creation_time, after_server_creation
+                )
+            )
+
+        if last_modified_time is not None:
+            filters.append(
+                request_gte_lte_filter(
+                    "last_modified_ts", last_modified_time, after_creation
+                )
+            )
+
+        if additional_filters:
+            filters.extend(additional_filters)
+
+        sort = {"field": sort_type, "keyword": sort_order} if sort_type else None
+
+        request_data = new_request_data(
+            filters=filters, search_from=search_from, search_to=search_to, sort=sort
+        )
+
+        response = self._call(
+            call_name="get_alerts",
+            json_value=request_data,
+        )
+        return GetAlertsResponse.model_validate(response.json())
+
     def get_all_xsiam_alerts(
         self,
         alert_ids: list[str] | None = None,
@@ -235,6 +317,10 @@ class AlertsAPI(BaseAPI):
         """
         Get all SIEM alerts across all pages using automatic pagination.
         This method automatically handles pagination and returns all alerts.
+
+        It paginates by page number, which /alerts/get_alerts discards, so it re-reads the first page
+        until its loop bound is reached and never returns more than the first 100 alerts. Walk
+        get_xsiam_alerts_by_offset with search_from/search_to instead.
 
         :param alert_ids: List of alert IDs (as strings)
         :param creation_time: Timestamp of the Creation time in milliseconds
